@@ -1,3 +1,14 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="CryptoGuard Banner" width="100%"/>
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/cryptoguard-ai/"><img src="https://img.shields.io/pypi/v/cryptoguard-ai?color=00d4ff&style=flat-square" alt="PyPI"/></a>
+  <a href="https://github.com/momenbasel/CryptoGuard/blob/main/LICENSE"><img src="https://img.shields.io/github/license/momenbasel/CryptoGuard?color=00d4ff&style=flat-square" alt="License"/></a>
+  <a href="https://github.com/momenbasel/CryptoGuard/stargazers"><img src="https://img.shields.io/github/stars/momenbasel/CryptoGuard?color=00d4ff&style=flat-square" alt="Stars"/></a>
+  <a href="https://pypi.org/project/cryptoguard-ai/"><img src="https://img.shields.io/pypi/pyversions/cryptoguard-ai?color=00d4ff&style=flat-square" alt="Python"/></a>
+</p>
+
 # CryptoGuard
 
 **AI agent safety layer that prevents crypto scams before they happen.**
@@ -84,7 +95,7 @@ CryptoGuard queries **5+ independent security oracles** in parallel:
 ### Install
 
 ```bash
-pip install cryptoguard
+pip install cryptoguard-ai-ai
 ```
 
 ### Install the AI Agent Hook (recommended)
@@ -101,7 +112,7 @@ cryptoguard install-hook --threshold MEDIUM    # Block medium and above
 ### One-Line Install
 
 ```bash
-pip install cryptoguard && cryptoguard install-hook
+pip install cryptoguard-ai && cryptoguard install-hook
 ```
 
 ### Manual Check

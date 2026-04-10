@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoGuard - AI Agent Safety Layer for Crypto Transactions</title>
+  <meta name="description" content="Open-source pre-transaction hook that protects AI agents from honeypots, blacklists, rug pulls, and scam tokens. Works with Claude Code, Codex, and any CLI AI agent.">
+  <meta property="og:title" content="CryptoGuard">
+  <meta property="og:description" content="AI agent safety layer for crypto transactions. Blocks honeypots, blacklists, and rug pulls before they happen.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/momenbasel/CryptoGuard/main/assets/banner.png">
+  <meta property="og:url" content="https://momenbasel.github.io/CryptoGuard">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/momenbasel/CryptoGuard/main/assets/logo.svg">
+  <style>
+    :root {
+      --bg: #0a0a14;
+      --bg2: #0e1025;
+      --bg3: #141430;
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0, 212, 255, 0.15);
+      --cyan-glow: rgba(0, 212, 255, 0.3);
+      --text: #e0e8f0;
+      --text-dim: #8899bb;
+      --card-bg: rgba(14, 16, 37, 0.8);
+      --border: rgba(0, 212, 255, 0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 30%, rgba(0,212,255,0.04) 0%, transparent 70%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 30px rgba(0,212,255,0.2));
+    }
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, #c0e0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero .tagline {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: var(--cyan);
+    }
+    .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .cta {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .cta-primary { background: var(--cyan); color: #0a0a14; }
+    .cta-primary:hover { background: #33dfff; box-shadow: 0 0 30px rgba(0,212,255,0.3); }
+    .cta-secondary { border: 1px solid var(--cyan); color: var(--cyan); }
+    .cta-secondary:hover { background: var(--cyan-dim); }
+
+    /* Install */
+    .install {
+      text-align: center;
+      padding: 40px 24px;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .install code {
+      display: inline-block;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 32px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 1.1rem;
+      color: var(--cyan);
+      letter-spacing: 0.5px;
+    }
+
+    /* Features */
+    .features { padding: 80px 24px; }
+    .features h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: var(--cyan-glow); }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: var(--cyan);
+    }
+    .feature-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+    /* How it works */
+    .how { padding: 80px 24px; background: var(--bg2); border-top: 1px solid var(--border); }
+    .how h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+    .flow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .flow-step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-align: center;
+      min-width: 160px;
+    }
+    .flow-step .num {
+      display: inline-block;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      line-height: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .flow-step h4 { font-size: 0.95rem; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.8rem; color: var(--text-dim); }
+    .flow-arrow { color: var(--cyan); font-size: 1.5rem; opacity: 0.5; }
+
+    /* Sources */
+    .sources { padding: 80px 24px; }
+    .sources h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .source-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .source-card h4 { color: var(--cyan); margin-bottom: 4px; }
+    .source-card p { color: var(--text-dim); font-size: 0.85rem; }
+
+    /* Detections table */
+    .detections { padding: 80px 24px; background: var(--bg2); border-top: 1px solid var(--border); }
+    .detections h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+    .det-table {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    .det-table th, .det-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .det-table th { color: var(--cyan); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+    .det-table td { font-size: 0.95rem; }
+    .sev-crit { color: #ff4444; font-weight: 700; }
+    .sev-high { color: #ff8800; font-weight: 600; }
+    .sev-med { color: #ffcc00; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2rem; }
+      .hero .tagline { font-size: 1rem; }
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <img src="https://raw.githubusercontent.com/momenbasel/CryptoGuard/main/assets/logo.svg" alt="CryptoGuard" class="hero-logo">
+  <h1>CRYPTOGUARD</h1>
+  <p class="tagline">AI agent safety layer that prevents crypto scams before they happen. One install protects every transaction.</p>
+  <div class="badges">
+    <span class="badge">Honeypot Detection</span>
+    <span class="badge">Blacklist Scanner</span>
+    <span class="badge">Rug Pull Guard</span>
+    <span class="badge">13 EVM Chains</span>
+  </div>
+  <div class="cta-group">
+    <a href="https://github.com/momenbasel/CryptoGuard" class="cta cta-primary">View on GitHub</a>
+    <a href="https://pypi.org/project/cryptoguard-ai/" class="cta cta-secondary">pip install cryptoguard-ai</a>
+  </div>
+</section>
+
+<section class="install">
+  <code>pip install cryptoguard-ai && cryptoguard install-hook</code>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2>What It Protects Against</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Honeypot Tokens</h3>
+        <p>Detects tokens you can buy but never sell. Simulates buy and sell transactions on forked chain state to verify you can actually exit.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Blacklist Functions</h3>
+        <p>Scans bytecode for blacklist/freeze selectors AND checks GoPlus data. If the owner can block your address after you buy, you'll know before buying.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Rug Pulls</h3>
+        <p>Checks if liquidity is locked, analyzes holder concentration, and detects if the owner can drain the pool or mint unlimited tokens.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Tax Manipulation</h3>
+        <p>Identifies contracts where the owner can change buy/sell tax to 100% after purchase, or set per-address taxes targeting YOU specifically.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Airdrop Scams</h3>
+        <p>Flags tokens that were airdropped to bait you into approving a malicious contract that drains your wallet.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Hidden Ownership</h3>
+        <p>Detects contracts with concealed admin mechanisms, reclaimable ownership, and balance manipulation capabilities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <h4>Intercept</h4>
+        <p>Hook detects crypto transaction in AI agent command</p>
+      </div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <h4>Analyze</h4>
+        <p>5+ security oracles queried in parallel</p>
+      </div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <h4>Score</h4>
+        <p>Weighted risk score computed (0-100)</p>
+      </div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-step">
+        <div class="num">4</div>
+        <h4>Decide</h4>
+        <p>Block dangerous, warn medium, allow safe</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sources">
+  <div class="container">
+    <h2>Security Oracles</h2>
+    <div class="source-grid">
+      <div class="source-card">
+        <h4>GoPlus Security</h4>
+        <p>Honeypot, blacklist, tax, ownership, holders, liquidity</p>
+      </div>
+      <div class="source-card">
+        <h4>Honeypot.is</h4>
+        <p>Buy/sell simulation on forked chain state</p>
+      </div>
+      <div class="source-card">
+        <h4>TokenSniffer</h4>
+        <p>Automated audit score, similar known scams</p>
+      </div>
+      <div class="source-card">
+        <h4>De.Fi Scanner</h4>
+        <p>DeFi protocol security issues</p>
+      </div>
+      <div class="source-card">
+        <h4>QuickIntel</h4>
+        <p>Multi-chain token intelligence</p>
+      </div>
+      <div class="source-card">
+        <h4>Bytecode Scanner</h4>
+        <p>Dangerous opcodes, blacklist selectors, proxy patterns</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="detections">
+  <div class="container">
+    <h2>Detection Coverage</h2>
+    <table class="det-table">
+      <thead>
+        <tr><th>Risk</th><th>Description</th><th>Severity</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Honeypot</td><td>Cannot sell tokens after buying</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Blacklist</td><td>Owner can freeze any address</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Balance manipulation</td><td>Owner can change anyone's balance</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Airdrop scam</td><td>Malicious token sent to bait interaction</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Self-destruct</td><td>Contract can destroy itself and drain funds</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Per-address tax</td><td>Owner can set 100% tax on YOUR address</td><td class="sev-crit">CRITICAL</td></tr>
+        <tr><td>Hidden owner</td><td>Concealed admin control</td><td class="sev-high">HIGH</td></tr>
+        <tr><td>Unlocked liquidity</td><td>LP can be pulled (rug pull)</td><td class="sev-high">HIGH</td></tr>
+        <tr><td>Unverified source</td><td>Code not published for audit</td><td class="sev-high">HIGH</td></tr>
+        <tr><td>Modifiable tax</td><td>Fees can be changed post-buy</td><td class="sev-high">HIGH</td></tr>
+        <tr><td>Proxy contract</td><td>Logic can be silently upgraded</td><td class="sev-med">MEDIUM</td></tr>
+        <tr><td>Mintable supply</td><td>New tokens can dilute holdings</td><td class="sev-med">MEDIUM</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p>Built by <a href="https://github.com/momenbasel">@momenbasel</a> | <a href="https://github.com/momenbasel/CryptoGuard">GitHub</a> | <a href="https://pypi.org/project/cryptoguard-ai/">PyPI</a> | MIT License</p>
+  <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.5;">If this tool saves you from a scam, star the repo. Every star helps protect more people.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a18"/>
+      <stop offset="40%" stop-color="#0e1025"/>
+      <stop offset="100%" stop-color="#141430"/>
+    </linearGradient>
+    <linearGradient id="shieldFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e2a4a"/>
+      <stop offset="100%" stop-color="#0e1530"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#0099cc"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0f0ff"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="bigGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15"/>
+    </filter>
+    <filter id="textShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset in="blur" dx="0" dy="2" result="shifted"/>
+      <feMerge>
+        <feMergeNode in="shifted"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Hex grid pattern -->
+    <pattern id="hexGrid" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+      <polygon points="30,1 55,14 55,38 30,51 5,38 5,14" fill="none" stroke="#00d4ff" stroke-width="0.3" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bgGrad)"/>
+
+  <!-- Hex grid overlay -->
+  <rect width="1280" height="640" fill="url(#hexGrid)"/>
+
+  <!-- Decorative horizontal lines -->
+  <line x1="0" y1="200" x2="1280" y2="200" stroke="#00d4ff" stroke-width="0.3" opacity="0.06"/>
+  <line x1="0" y1="440" x2="1280" y2="440" stroke="#00d4ff" stroke-width="0.3" opacity="0.06"/>
+
+  <!-- Ambient glow spots -->
+  <circle cx="280" cy="320" r="200" fill="#00d4ff" opacity="0.03" filter="url(#bigGlow)"/>
+  <circle cx="900" cy="300" r="150" fill="#00d4ff" opacity="0.02" filter="url(#bigGlow)"/>
+
+  <!-- Decorative circuit traces (left side) -->
+  <g opacity="0.08" stroke="#00d4ff" stroke-width="1" fill="none">
+    <path d="M50,100 L50,200 L100,250"/>
+    <path d="M80,80 L80,180 L130,230"/>
+    <circle cx="100" cy="250" r="3" fill="#00d4ff"/>
+    <circle cx="130" cy="230" r="3" fill="#00d4ff"/>
+    <path d="M50,400 L100,400 L150,450"/>
+    <path d="M30,450 L80,450 L130,500"/>
+    <circle cx="150" cy="450" r="3" fill="#00d4ff"/>
+  </g>
+
+  <!-- Decorative circuit traces (right side) -->
+  <g opacity="0.06" stroke="#00d4ff" stroke-width="1" fill="none">
+    <path d="M1230,120 L1230,200 L1180,250"/>
+    <path d="M1200,100 L1200,180 L1150,230"/>
+    <circle cx="1180" cy="250" r="3" fill="#00d4ff"/>
+    <path d="M1250,420 L1200,420 L1150,470"/>
+    <circle cx="1150" cy="470" r="3" fill="#00d4ff"/>
+  </g>
+
+  <!-- === LEFT: Shield Logo === -->
+  <g transform="translate(280, 320) scale(0.65)">
+    <!-- Shield body -->
+    <path d="M0,-180 L145,-115 L145,75 Q145,165 0,210 Q-145,165 -145,75 L-145,-115 Z"
+          fill="url(#shieldFill)" stroke="url(#cyan)" stroke-width="3" opacity="0.95"/>
+    <!-- Inner glow -->
+    <path d="M0,-180 L145,-115 L145,75 Q145,165 0,210 Q-145,165 -145,75 L-145,-115 Z"
+          fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.2" filter="url(#glow)"/>
+
+    <!-- Chain grid inside -->
+    <g opacity="0.1" stroke="#00d4ff" stroke-width="0.8" fill="none">
+      <line x1="-145" y1="-60" x2="145" y2="-60"/>
+      <line x1="-145" y1="0" x2="145" y2="0"/>
+      <line x1="-145" y1="60" x2="145" y2="60"/>
+      <line x1="-145" y1="120" x2="145" y2="120"/>
+      <line x1="-60" y1="-190" x2="-60" y2="220"/>
+      <line x1="0" y1="-190" x2="0" y2="220"/>
+      <line x1="60" y1="-190" x2="60" y2="220"/>
+    </g>
+
+    <!-- Central AI node -->
+    <g filter="url(#glow)">
+      <circle cx="0" cy="-10" r="30" fill="none" stroke="#00d4ff" stroke-width="2.5" opacity="0.8"/>
+      <circle cx="0" cy="-10" r="18" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="0" cy="-10" r="8" fill="#00d4ff" opacity="0.9"/>
+      <!-- Neural spokes -->
+      <line x1="0" y1="-40" x2="0" y2="-80" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="0" cy="-84" r="4" fill="#00d4ff" opacity="0.5"/>
+      <line x1="26" y1="-24" x2="65" y2="-55" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="68" cy="-58" r="4" fill="#00d4ff" opacity="0.45"/>
+      <line x1="-26" y1="-24" x2="-65" y2="-55" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="-68" cy="-58" r="4" fill="#00d4ff" opacity="0.45"/>
+      <line x1="30" y1="-10" x2="80" y2="-10" stroke="#00d4ff" stroke-width="1.5" opacity="0.35"/>
+      <circle cx="84" cy="-10" r="3.5" fill="#00d4ff" opacity="0.4"/>
+      <line x1="-30" y1="-10" x2="-80" y2="-10" stroke="#00d4ff" stroke-width="1.5" opacity="0.35"/>
+      <circle cx="-84" cy="-10" r="3.5" fill="#00d4ff" opacity="0.4"/>
+      <line x1="22" y1="14" x2="55" y2="50" stroke="#00d4ff" stroke-width="1.5" opacity="0.3"/>
+      <circle cx="58" cy="53" r="3" fill="#00d4ff" opacity="0.35"/>
+      <line x1="-22" y1="14" x2="-55" y2="50" stroke="#00d4ff" stroke-width="1.5" opacity="0.3"/>
+      <circle cx="-58" cy="53" r="3" fill="#00d4ff" opacity="0.35"/>
+    </g>
+
+    <!-- Checkmark at bottom -->
+    <polyline points="-12,140 -3,152 14,128" fill="none" stroke="#00d4ff" stroke-width="3.5"
+              stroke-linecap="round" stroke-linejoin="round" opacity="0.7" filter="url(#glow)"/>
+  </g>
+
+  <!-- === RIGHT: Text === -->
+  <g filter="url(#textShadow)">
+    <!-- Main title -->
+    <text x="520" y="290" font-family="'SF Pro Display', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+          font-size="82" font-weight="800" fill="url(#textGrad)" letter-spacing="6">
+      CRYPTOGUARD
+    </text>
+    <!-- Accent line under title -->
+    <rect x="520" y="308" width="200" height="3" fill="#00d4ff" opacity="0.7" rx="1.5" filter="url(#glow)"/>
+    <!-- Tagline -->
+    <text x="520" y="350" font-family="'SF Pro Display', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+          font-size="24" font-weight="400" fill="#8899bb" letter-spacing="2">
+      AI Agent Safety Layer for Crypto Transactions
+    </text>
+    <!-- Feature badges -->
+    <g transform="translate(520, 390)">
+      <!-- Badge 1: Honeypot Detection -->
+      <rect x="0" y="0" width="170" height="32" rx="16" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+      <text x="85" y="21" text-anchor="middle" font-family="'SF Mono', 'Fira Code', monospace"
+            font-size="13" fill="#00d4ff" opacity="0.7">Honeypot Detection</text>
+      <!-- Badge 2: Blacklist Scanner -->
+      <rect x="185" y="0" width="160" height="32" rx="16" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+      <text x="265" y="21" text-anchor="middle" font-family="'SF Mono', 'Fira Code', monospace"
+            font-size="13" fill="#00d4ff" opacity="0.7">Blacklist Scanner</text>
+      <!-- Badge 3: Rug Pull Guard -->
+      <rect x="360" y="0" width="150" height="32" rx="16" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+      <text x="435" y="21" text-anchor="middle" font-family="'SF Mono', 'Fira Code', monospace"
+            font-size="13" fill="#00d4ff" opacity="0.7">Rug Pull Guard</text>
+    </g>
+    <!-- Bottom stats -->
+    <g transform="translate(520, 460)" opacity="0.5">
+      <text x="0" y="0" font-family="'SF Mono', monospace" font-size="14" fill="#667799">
+        5+ Security Oracles  |  13 EVM Chains  |  Zero API Keys  |  MIT License
+      </text>
+    </g>
+  </g>
+
+  <!-- Bottom bar accent -->
+  <rect x="0" y="630" width="1280" height="10" fill="#00d4ff" opacity="0.15"/>
+  <rect x="0" y="634" width="400" height="6" fill="#00d4ff" opacity="0.4" rx="0"/>
+</svg>

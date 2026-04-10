@@ -31,7 +31,7 @@ echo -e "Python version: ${GREEN}${PYTHON_VERSION}${NC}"
 # Install the package
 echo ""
 echo -e "${BOLD}Installing CryptoGuard...${NC}"
-pip install cryptoguard 2>/dev/null || pip3 install cryptoguard
+pip install cryptoguard-ai 2>/dev/null || pip3 install cryptoguard
 
 # Verify installation
 if ! command -v cryptoguard &> /dev/null; then
