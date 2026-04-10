@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hook": "python -m cryptoguard.hook"
+      }
+    ]
+  }
+}
