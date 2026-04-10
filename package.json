@@ -1,0 +1,23 @@
+{
+  "name": "@momenbasel/cryptoguard",
+  "version": "0.1.0",
+  "description": "AI agent safety layer for crypto transactions - blocks honeypots, blacklists, and rug pulls before they happen",
+  "keywords": [
+    "claude-code-skill",
+    "crypto",
+    "security",
+    "honeypot",
+    "blacklist",
+    "rug-pull",
+    "smart-contract",
+    "ai-agent",
+    "mcp"
+  ],
+  "author": "momenbasel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/momenbasel/CryptoGuard.git"
+  },
+  "homepage": "https://github.com/momenbasel/CryptoGuard"
+}
